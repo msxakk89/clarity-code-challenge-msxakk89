@@ -57,6 +57,7 @@ Clarinet.test({
 
         const expectedCampaign = newCampaign.result;
         expectedCampaign.expectOk();
+        //console.log(expectedCampaign) 
         assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x5468697320697320612063616d706169676e20746861742049206d6164652e, endsAt: u100, fundGoal: u10000, link: u"https://example.com", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"Test Campaign"})');
     },
 });
@@ -247,7 +248,7 @@ Clarinet.test({
         );
 
         const expectedCampaign = updatedCampaign.result;
-        console.log(expectedCampaign)
+        //console.log(expectedCampaign)
         expectedCampaign.expectOk();
         assertEquals(expectedCampaign, '(ok {campaignOwner: ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, claimed: false, description: 0x4e6577206465736372697074696f6e, endsAt: u100, fundGoal: u10000, link: u"https://newexample.org", pledgedAmount: u0, pledgedCount: u0, startsAt: u2, targetReached: false, targetReachedBy: u0, title: u"New Title"})');
     },
@@ -312,17 +313,17 @@ Clarinet.test({
         let block = chain.mineBlock([
             Tx.contractCall('clearfund', 'launch', [types.utf8('Test Campaign'), types.buff('This is a campaign that I made.'), types.utf8('https://example.com'), types.uint(10000), types.uint(2), types.uint(100)], wallet_1)
         ]);
-
+        // console.log(block)
         chain.mineEmptyBlockUntil(5)
 
         let block2 = chain.mineBlock([
             Tx.contractCall('clearfund', 'pledge', [types.uint(1), types.uint(20000)], wallet_2)
         ])
-
+        // console.log(block2)
         let block3 = chain.mineBlock([
             Tx.contractCall('clearfund', 'claim', [types.uint(1)], wallet_1)
         ])
-
+        // console.log(block3)
         const claimedCampaignBlock = block3.receipts[0].result
 
         claimedCampaignBlock.expectOk();
@@ -643,7 +644,7 @@ Clarinet.test({
     },
 });
 
-// UNPLEDGING FROM A CAMPAIGN
+// // UNPLEDGING FROM A CAMPAIGN
 Clarinet.test({
     name: "unpledge: a user should be able to unpledge their investment",
     async fn(chain: Chain, accounts: Map<string, Account>) {
@@ -788,7 +789,7 @@ Clarinet.test({
     },
 });
 
-// REFUND FROM A CAMPAIGN
+// // REFUND FROM A CAMPAIGN
 Clarinet.test({
     name: "refund: a user can get refund from the campaign that has ended and not reached its goal",
     async fn(chain: Chain, accounts: Map<string, Account>) {
