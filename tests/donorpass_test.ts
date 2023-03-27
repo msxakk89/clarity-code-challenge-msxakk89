@@ -1,5 +1,4 @@
-
-import { Clarinet, Tx, Chain, Account, types } from 'https://deno.land/x/clarinet@v1.3.0/index.ts';
+import { Clarinet, Tx, Chain, Account, types } from 'https://deno.land/x/clarinet@v1.0.6/index.ts';
 import { assertEquals } from 'https://deno.land/std@0.90.0/testing/asserts.ts';
 import { launch, pledge } from "../helpers/clearfund.ts"
 import { getLastTokenId, mint, transfer, getOwner, getTokenUri } from "../helpers/donorpass.ts"
@@ -47,12 +46,10 @@ Clarinet.test({
 
         // minting the donorpass
         const def = chain.mineBlock([ launch(wallet1) ])
-
         chain.mineEmptyBlockUntil(40)
         const abc = chain.mineBlock([ pledge(wallet2) ])
-        // console.log(abc)
+
         const minedBlock = chain.mineBlock([transfer(wallet2, wallet3, 1)])
-        // console.log(minedBlock)
         assertEquals(minedBlock.height, 42)
         minedBlock.receipts[0].result.expectOk().expectBool(true)
 
@@ -80,7 +77,6 @@ Clarinet.test({
         minedBlock.receipts[0].result.expectErr().expectUint(100)
 
         const theAssetsMaps = chain.getAssetsMaps()
-        
         const investorNFTCount = theAssetsMaps.assets[".donorpass.donorpass"]
         assertEquals(investorNFTCount, undefined)
     },
@@ -98,17 +94,16 @@ Clarinet.test({
         chain.mineBlock([ launch(wallet1) ])
         chain.mineEmptyBlockUntil(40)
         chain.mineBlock([ pledge(wallet2) ])
-        // console.log(chain)
+
         assertEquals(getLastTokenId(chain, deployer).result, `(ok u1)`)
 
         const theAssetsMaps = chain.getAssetsMaps()
-        // console.log(theAssetsMaps)
         const investorNFTCount = theAssetsMaps.assets[".donorpass.donorpass"][wallet2]
         assertEquals(investorNFTCount, 1)
     }
 });
 
-// // tests for readonly functions
+// tests for readonly functions
 
 Clarinet.test({
     name: "get-last-token-id: a user is able to read the last nft id minted",

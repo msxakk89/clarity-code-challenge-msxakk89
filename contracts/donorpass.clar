@@ -33,10 +33,8 @@
     (new_id (+ (var-get lastTokenId) u1))
     ;; (sender tx-sender)
   )
-  ;; (asserts! (is-eq tx-sender CLEARFUND_CONTRACT ) ERR_CLEARFUND_ONLY)
-  ;; (print (as-contract tx-sender))
-  ;; (print CLEARFUND_CONTRACT)
-  ;; (print tx-sender)
+  (asserts! (is-eq tx-sender CLEARFUND_CONTRACT ) ERR_CLEARFUND_ONLY)
+
   (try! (nft-mint? donorpass new_id for)) 
   (var-set lastTokenId new_id)
   (ok true)
